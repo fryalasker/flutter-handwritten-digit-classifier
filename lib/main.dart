@@ -42,7 +42,8 @@ class _HomeState extends State<Home> {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
           case ConnectionState.waiting:
-            return new Text('Please wait: Classification of images in progress...');
+            return new Text(
+                'Please wait: Classification of images in progress...');
           default:
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
@@ -92,31 +93,40 @@ class _HomeState extends State<Home> {
     List<MnistClassifierResult> values = snapshot.data;
 
     if (snapshot.hasData && values.length > 0) {
-      return ListView.builder(
-          itemBuilder: (context, i) {
-            if (i < values.length) {
-              return _buildRow(values[i]);
-            }
-          });
+      return ListView.builder(itemBuilder: (context, i) {
+        if (i < values.length) {
+          return _buildRow(values[i]);
+        }
+      });
     } else {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Instructions', style: TextStyle(decoration: TextDecoration.underline)),
-            Text('1. Write a number on a piece of paper.'),
-            Text('2. Press the camera button to launch the camera.'),
-            Text('3. Zoom in closely and center the number on the screen.'),
-            Text('4. Take the picture.'),
-          ],
-        ),
-      );
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            'By Fryal Waleed & Sarah',
+            style: TextStyle(fontSize: 18),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('Instructions',
+                  style: TextStyle(decoration: TextDecoration.underline)),
+              Text('1. Write a number on a piece of paper.'),
+              Text('2. Press the camera button to launch the camera.'),
+              Text('3. Zoom in closely and center the number on the screen.'),
+              Text('4. Take the picture.'),
+            ],
+          ),
+        ],
+      ));
     }
   }
 
   Widget _buildRow(MnistClassifierResult res) {
     return ListTile(
-      leading: new Image.file(new File(res.fileName), height: 28, fit: BoxFit.scaleDown),
+      leading: new Image.file(new File(res.fileName),
+          height: 28, fit: BoxFit.scaleDown),
       title: Text(res.label),
       subtitle: Text('Confidence: ' + res.confidence.toString()),
       trailing: Text(res.index.toString()),
